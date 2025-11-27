@@ -29,7 +29,8 @@ export default function Templates() {
           <div
             key={t.id}
             className="rounded-xl border shadow hover:shadow-lg p-4 cursor-pointer"
-            onClick={() => setSelected(t)}
+            onClick={() => navigate("/template-editor", { state: { template: t } })}
+
           >
             <img
               src={t.preview}

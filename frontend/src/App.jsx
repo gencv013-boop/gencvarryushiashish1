@@ -6,6 +6,7 @@ import Signup from "./pages/Auth/Signup";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AISummary from "./pages/AI/AISummary";
 import Templates from "./pages/Templates";
+import TemplateEditor from "./pages/TemplateEditor";
 
 
 
@@ -35,6 +36,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/ai-summary" element={<AISummary />} />
         <Route path="/templates" element={<Templates />} />
+        <Route path="/template-editor" element={<TemplateEditor />} />
+
 
 
 
