@@ -9,8 +9,28 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // temporary login success
-    navigate("/dashboard"); 
+    // Save login user data
+    const userData = {
+      email: email,
+    };
+
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("isLoggedIn", "true");
+    const handleLogin = (e) => {
+      e.preventDefault();
+    
+      const userData = {
+        email: email,
+      };
+    
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("isLoggedIn", "true");
+    
+      navigate("/dashboard");
+    };
+    
+
+    
   };
 
   return (
@@ -44,4 +64,3 @@ export default function Login() {
     </div>
   );
 }
-
