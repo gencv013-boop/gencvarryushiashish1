@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { ArrowLeft, FileText } from "lucide-react";
+import React from "react";
+import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function Templates() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState(null);
 
   const templates = [
     { id: 1, name: "Modern CV", preview: "/templates/template1.png" },
@@ -29,8 +28,9 @@ export default function Templates() {
           <div
             key={t.id}
             className="rounded-xl border shadow hover:shadow-lg p-4 cursor-pointer"
-            onClick={() => navigate("/template-editor", { state: { template: t } })}
-
+            onClick={() =>
+              navigate("/template-editor", { state: { template: t } })
+            }
           >
             <img
               src={t.preview}
@@ -41,37 +41,6 @@ export default function Templates() {
           </div>
         ))}
       </div>
-
-      {/* Template Preview Modal */}
-      {selected && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-3xl">
-            <img
-              src={selected.preview}
-              alt="Preview"
-              className="w-full rounded-lg mb-4"
-            />
-
-            <h2 className="text-xl font-bold mb-2">{selected.name}</h2>
-
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={() => setSelected(null)}
-                className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
-              >
-                Close
-              </button>
-
-              <button
-                onClick={() => navigate("/cv-ai-builder")}
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white"
-              >
-                Use Template
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
