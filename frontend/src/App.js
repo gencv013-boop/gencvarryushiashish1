@@ -8,6 +8,9 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import CVTemplate1 from "./pages/CVBuilder/CVTemplate1"; // This will be /cv-ai-builder
 import Profile from "./pages/Profile/Profile";
 import AISummary from "./pages/AI/AISummary";
+import Templates from "./pages/Templates";
+
+
 
 
 function App() {
@@ -31,6 +34,8 @@ function App() {
         {/* Profile Page */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/ai-summary" element={<AISummary />} />
+        <Route path="/templates" element={<Templates />} />
+
 
       </Routes>
     </Router>
