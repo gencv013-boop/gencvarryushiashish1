@@ -125,6 +125,8 @@ export default function Dashboard() {
             title="Templates"
             description="Choose from modern templates."
             icon={<Home size={32} />}
+            onClick={() => navigate("/templates")}
+
           />
           <FeatureCard
             title="Profile"
