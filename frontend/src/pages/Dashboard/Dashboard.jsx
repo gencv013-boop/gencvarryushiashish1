@@ -13,13 +13,11 @@ import {
   Menu,
   Sun,
   Moon,
-  Sparkles,
 } from "lucide-react";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
-
   const [collapsed, setCollapsed] = useState(false);
   const [dark, setDark] = useState(false);
 
@@ -37,73 +35,32 @@ export default function Dashboard() {
     { title: "Templates Used", value: 7 },
   ];
 
-  const quickActions = [
-    {
-      label: "New CV",
-      description: "Start a fresh CV",
-      icon: FileText,
-      onClick: () => navigate("/cv-ai-builder"),
-    },
-    {
-      label: "AI Summary",
-      description: "Generate a summary",
-      icon: Sparkles,
-      onClick: () => navigate("/ai-summary"),
-    },
-    {
-      label: "Browse Templates",
-      description: "See all templates",
-      icon: Home,
-      onClick: () => navigate("/templates"),
-    },
-  ];
-
-  const recentActivity = [
-    {
-      title: "Updated CV for Frontend Developer role",
-      time: "2 hours ago",
-    },
-    {
-      title: "Generated AI summary for Product Manager CV",
-      time: "1 day ago",
-    },
-    {
-      title: "Downloaded CV - Software Engineer",
-      time: "3 days ago",
-    },
-  ];
-
   return (
     <div
-      className={`${
-        dark
-          ? "dark bg-gray-900 text-white"
-          : "bg-gray-100 text-gray-900"
-      } flex h-screen overflow-hidden transition-colors duration-300`}
+      className={`flex h-screen overflow-hidden transition ${
+        dark ? "dark bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
+      }`}
     >
       {/* SIDEBAR */}
       <div
-        className={`${
-          dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"
-        } shadow-lg flex flex-col transition-all duration-300 border-r ${
+        className={`backdrop-blur-xl bg-white/40 dark:bg-gray-800/40 shadow-2xl flex flex-col border-r border-white/20 dark:border-gray-700/40 transition-all duration-300 ${
           collapsed ? "w-20" : "w-64"
         }`}
       >
-        <div className="px-4 py-5 font-bold text-2xl border-b flex items-center justify-between dark:border-gray-800">
-          {!collapsed && <span>GenCV</span>}
+        <div className="px-6 py-6 font-bold text-2xl border-b border-white/20 dark:border-gray-700/40 flex items-center justify-between">
+          {!collapsed && "GenCV"}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="p-1 rounded-lg hover:bg-white/40 dark:hover:bg-gray-700/60"
           >
             {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           </button>
         </div>
 
-        <div className="flex-1 px-2 py-4 space-y-1">
+        <div className="flex-1 px-3 py-6 space-y-2">
           {menuItems.map((item, idx) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.route;
-
             return (
               <SidebarItem
                 key={idx}
@@ -117,7 +74,7 @@ export default function Dashboard() {
           })}
         </div>
 
-        <div className="p-3 border-t dark:border-gray-800">
+        <div className="p-4 border-t border-white/20 dark:border-gray-700/40">
           <SidebarItem
             icon={<LogOut size={20} />}
             label="Logout"
@@ -128,113 +85,59 @@ export default function Dashboard() {
       </div>
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 flex flex-col">
-        <div className="px-6 py-4 border-b dark:border-gray-800">
-          <TopBar
-            dark={dark}
-            setDark={setDark}
-            onToggleSidebar={() => setCollapsed(!collapsed)}
-          />
+      <div className="flex-1 p-10 overflow-y-auto">
+        <TopBar dark={dark} setDark={setDark} />
+
+        <h1 className="text-4xl font-extrabold mb-6 tracking-tight">
+          Welcome back! 👋
+        </h1>
+
+        {/* STATS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          {stats.map((s, i) => (
+            <div
+              key={i}
+              className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 p-6 rounded-2xl shadow-xl text-center border border-white/30 dark:border-gray-700/60"
+            >
+              <h2 className="text-4xl font-bold drop-shadow-sm">{s.value}</h2>
+              <p className="text-gray-600 dark:text-gray-300 text-sm tracking-wide">
+                {s.title}
+              </p>
+            </div>
+          ))}
         </div>
 
-        <div className="flex-1 p-6 overflow-y-auto">
-          <h1 className="text-3xl font-bold mb-4">Welcome back! 👋</h1>
-          <p className="text-gray-500 dark:text-gray-300 mb-6">
-            Here’s a quick overview of your CV activity and tools.
-          </p>
-
-          {/* QUICK ACTIONS */}
-          <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-3">Quick actions</h2>
-            <div className="flex flex-wrap gap-3">
-              {quickActions.map((action, index) => {
-                const Icon = action.icon;
-                return (
-                  <button
-                    key={index}
-                    onClick={action.onClick}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
-                      bg-white dark:bg-gray-800 shadow hover:shadow-md
-                      hover:-translate-y-0.5 transition transform"
-                  >
-                    <Icon size={18} />
-                    <span>{action.label}</span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      · {action.description}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* STATS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            {stats.map((s, i) => (
-              <div
-                key={i}
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow
-                  hover:shadow-lg transition transform hover:-translate-y-0.5"
-              >
-                <h2 className="text-3xl font-bold mb-1">{s.value}</h2>
-                <p className="text-gray-500 dark:text-gray-300 text-sm">
-                  {s.title}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* FEATURE CARDS + RECENT ACTIVITY */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 lg:col-span-2">
-              <FeatureCard
-                title="Build a CV"
-                description="Create a professional CV in minutes."
-                icon={<FileText size={32} />}
-                onClick={() => navigate("/cv-ai-builder")}
-              />
-              <FeatureCard
-                title="AI Resume Summary"
-                description="Generate smart resume summaries."
-                icon={<Wand2 size={32} />}
-                onClick={() => navigate("/ai-summary")}
-              />
-              <FeatureCard
-                title="Templates"
-                description="Choose from modern templates."
-                icon={<Home size={32} />}
-                onClick={() => navigate("/templates")}
-              />
-              <FeatureCard
-                title="Profile"
-                description="View and edit your account details."
-                icon={<User2 size={32} />}
-                onClick={() => navigate("/profile")}
-              />
-              <FeatureCard
-                title="Settings"
-                description="Manage your preferences."
-                icon={<Settings size={32} />}
-                onClick={() => navigate("/settings")}
-              />
-            </div>
-
-            {/* RECENT ACTIVITY */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow h-fit">
-              <h2 className="text-lg font-semibold mb-4">Recent activity</h2>
-              <ul className="space-y-3">
-                {recentActivity.map((item, idx) => (
-                  <li key={idx} className="border-b last:border-0 pb-3 last:pb-0 dark:border-gray-700">
-                    <p className="text-sm font-medium mb-1">{item.title}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {item.time}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
+        {/* FEATURE CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <FeatureCard
+            title="Build a CV"
+            description="Create a professional CV in minutes."
+            icon={<FileText size={32} />}
+            onClick={() => navigate("/cv-ai-builder")}
+          />
+          <FeatureCard
+            title="AI Resume Summary"
+            description="Generate smart resume summaries."
+            icon={<Wand2 size={32} />}
+            onClick={() => navigate("/ai-summary")}
+          />
+          <FeatureCard
+            title="Templates"
+            description="Choose from modern templates."
+            icon={<Home size={32} />}
+          />
+          <FeatureCard
+            title="Profile"
+            description="View and edit your account details."
+            icon={<User2 size={32} />}
+            onClick={() => navigate("/profile")}
+          />
+          <FeatureCard
+            title="Settings"
+            description="Manage your preferences."
+            icon={<Settings size={32} />}
+            onClick={() => navigate("/settings")}
+          />
         </div>
       </div>
     </div>
@@ -247,12 +150,11 @@ function SidebarItem({ icon, label, onClick, active, collapsed }) {
       onClick={onClick}
       className={`w-full flex items-center ${
         collapsed ? "justify-center" : "justify-start"
-      } space-x-3 px-3 py-2 rounded-lg cursor-pointer text-sm
-      transition hover:bg-gray-100 dark:hover:bg-gray-800
+      } space-x-3 px-3 py-2 rounded-xl text-sm transition
       ${
         active
-          ? "bg-gray-200 dark:bg-gray-700 font-semibold"
-          : ""
+          ? "bg-blue-500/80 text-white shadow-md"
+          : "bg-white/40 dark:bg-gray-800/40 hover:bg-white/70 dark:hover:bg-gray-700/70 text-gray-800 dark:text-gray-100"
       }`}
     >
       {icon}
@@ -261,86 +163,36 @@ function SidebarItem({ icon, label, onClick, active, collapsed }) {
   );
 }
 
-function TopBar({ dark, setDark, onToggleSidebar }) {
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-
+function TopBar({ dark, setDark }) {
   return (
-    <div className="flex items-center justify-between gap-4">
-      <div className="flex items-center gap-3">
-        <button
-          className="md:hidden p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-          onClick={onToggleSidebar}
-        >
-          <Menu size={20} />
-        </button>
-        <input
-          type="text"
-          placeholder="Search CVs, templates..."
-          className="p-2 w-52 sm:w-64 rounded-lg border shadow-sm text-sm
-            bg-white dark:bg-gray-900 dark:border-gray-700"
-        />
-      </div>
+    <div className="flex justify-between items-center mb-8">
+      <input
+        type="text"
+        placeholder="Search..."
+        className="p-2 w-64 rounded-xl border border-white/40 dark:border-gray-700/60 shadow-sm bg-white/70 dark:bg-gray-900/60 text-sm outline-none focus:ring-2 focus:ring-blue-400/60"
+      />
 
-      <div className="flex items-center gap-4 relative">
+      <div className="flex items-center space-x-4">
         {/* Dark mode toggle */}
         <button
           onClick={() => setDark(!dark)}
-          className="p-2 rounded-full border bg-white dark:bg-gray-900
-            dark:border-gray-700 hover:shadow"
+          className="p-2 rounded-full border border-white/40 dark:border-gray-700/60 bg-white/70 dark:bg-gray-900/70 shadow-sm"
         >
           {dark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
 
         {/* Notifications */}
-        <div className="relative cursor-pointer p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+        <div className="relative p-2 rounded-full bg-white/70 dark:bg-gray-900/70 border border-white/40 dark:border-gray-700/60 cursor-pointer">
           <Bell size={20} />
-          <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] px-1 rounded-full">
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full">
             3
           </span>
         </div>
 
-        {/* User dropdown */}
-        <div className="relative">
-          <button
-            className="flex items-center gap-2 px-3 py-2 rounded-full bg-white dark:bg-gray-900 border dark:border-gray-700 text-sm"
-            onClick={() => setOpen(!open)}
-          >
-            <User2 size={18} />
-            <span className="hidden sm:inline">Hello, User</span>
-          </button>
-
-          {open && (
-            <div className="absolute right-0 mt-2 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg shadow-lg w-40 text-sm z-10">
-              <div
-                className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => {
-                  navigate("/profile");
-                  setOpen(false);
-                }}
-              >
-                Profile
-              </div>
-              <div
-                className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => {
-                  navigate("/settings");
-                  setOpen(false);
-                }}
-              >
-                Settings
-              </div>
-              <div
-                className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => {
-                  navigate("/");
-                  setOpen(false);
-                }}
-              >
-                Logout
-              </div>
-            </div>
-          )}
+        {/* User avatar / name */}
+        <div className="flex items-center space-x-2 px-3 py-2 rounded-full bg-white/70 dark:bg-gray-900/70 border border-white/40 dark:border-gray-700/60">
+          <User2 size={20} />
+          <span className="text-sm font-medium">Hello, User</span>
         </div>
       </div>
     </div>
@@ -351,12 +203,13 @@ function FeatureCard({ title, description, icon, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow
-        hover:shadow-lg cursor-pointer transition transform hover:-translate-y-0.5 text-left"
+      className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 p-6 rounded-2xl shadow-xl border border-white/30 dark:border-gray-700/60 text-left transition transform hover:-translate-y-1 hover:shadow-2xl"
     >
-      <div className="mb-3">{icon}</div>
+      <div className="mb-4">{icon}</div>
       <h3 className="text-lg font-semibold mb-1">{title}</h3>
-      <p className="text-sm text-gray-500 dark:text-gray-300">{description}</p>
+      <p className="text-sm text-gray-600 dark:text-gray-300">
+        {description}
+      </p>
     </button>
   );
 }
