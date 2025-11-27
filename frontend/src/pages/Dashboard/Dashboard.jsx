@@ -10,7 +10,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Bell,
-  Menu,
   Sun,
   Moon,
 } from "lucide-react";
@@ -18,8 +17,10 @@ import {
 export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [collapsed, setCollapsed] = useState(false);
   const [dark, setDark] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
 
   const menuItems = [
     { icon: Home, label: "Home", route: "/dashboard" },
@@ -33,6 +34,15 @@ export default function Dashboard() {
     { title: "CVs Created", value: 12 },
     { title: "AI Summaries", value: 5 },
     { title: "Templates Used", value: 7 },
+  ];
+
+  const templates = [
+    "Modern CV",
+    "Simple Clean",
+    "Professional Blue",
+    "Minimal Grey",
+    "Creative Layout",
+    "ATS Friendly",
   ];
 
   return (
@@ -125,8 +135,7 @@ export default function Dashboard() {
             title="Templates"
             description="Choose from modern templates."
             icon={<Home size={32} />}
-            onClick={() => navigate("/templates")}
-
+            onClick={() => setShowTemplates(true)} // <<< HERE
           />
           <FeatureCard
             title="Profile"
@@ -141,11 +150,45 @@ export default function Dashboard() {
             onClick={() => navigate("/settings")}
           />
         </div>
+
+        {/* TEMPLATES SECTION (shows after clicking Templates card) */}
+        {showTemplates && (
+          <div className="mt-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-semibold">Templates</h2>
+              <button
+                onClick={() => setShowTemplates(false)}
+                className="text-sm px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {templates.map((name, index) => (
+                <button
+                  key={index}
+                  onClick={() => alert(`You clicked: ${name}`)}
+                  className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 p-4 rounded-2xl shadow-md border border-white/30 dark:border-gray-700/60 text-left transition transform hover:-translate-y-1 hover:shadow-2xl"
+                >
+                  {/* Fake preview box */}
+                  <div className="h-32 mb-3 rounded-xl bg-gradient-to-br from-blue-100 to-purple-200 dark:from-gray-700 dark:to-gray-600" />
+
+                  <h3 className="font-semibold">{name}</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Click to use this template.
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
+/* Sidebar item */
 function SidebarItem({ icon, label, onClick, active, collapsed }) {
   return (
     <button
@@ -165,6 +208,7 @@ function SidebarItem({ icon, label, onClick, active, collapsed }) {
   );
 }
 
+/* Top bar */
 function TopBar({ dark, setDark }) {
   return (
     <div className="flex justify-between items-center mb-8">
@@ -201,6 +245,7 @@ function TopBar({ dark, setDark }) {
   );
 }
 
+/* Feature card */
 function FeatureCard({ title, description, icon, onClick }) {
   return (
     <button
